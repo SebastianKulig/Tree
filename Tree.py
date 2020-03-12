@@ -8,7 +8,7 @@ class Node:
         self.right = None
         self.data = data
         self.lvl = lvl
-
+# I'm using two methods to create this tree (because this is not typical binary tree)
     def insert_from_left_to_right(self, data):
         if self.data is not None:
 
@@ -31,7 +31,7 @@ class Node:
                 self.right.insert_from_right_to_left(data)
         else:
             self.data = data
-
+# printing data structure
     def print_lvl(self):
         if self.lvl == 1:
             print("-", self.data, "LEVEL: ", self.lvl)
@@ -49,8 +49,8 @@ class Node:
 
 
 # ===================================================================================================================================================================================
+
 def create_tree():
-    # Create a tree
     values_l = [3, 7, 2, 5]
     root = Node(5, 1)
     for v in values_l:
@@ -65,12 +65,11 @@ def create_tree():
 # finding node with right values
 def search(value, level):
     visited_nodes(root_of_tree)
-    for l in list_of_visited_leafs:
+    for l in list_of_visited_nodes:
         if l.data == value and l.lvl == level:
-            list_of_visited_leafs.clear()
+            list_of_visited_nodes.clear()
             return l
     return None
-
 
 
 # sum data of all nodes beneath node
@@ -80,25 +79,25 @@ def sum_data(node):
     return node.data + sum_data(node.left) + sum_data(node.right)
 
 
-def sum_data_in_tree(start, tier):
-    return sum_data(search(start, tier))
+def sum_data_in_tree(start_point, lvl):
+    return sum_data(search(start_point, lvl))
 
 
-def mean(start, tier):
-    visited_nodes(search(start, tier))
-    length = len(list_of_visited_leafs)
-    list_of_visited_leafs.clear()
-    return sum_data_in_tree(start, tier) / length
+def mean(start_point, lvl):
+    visited_nodes(search(start_point, lvl))
+    length = len(list_of_visited_nodes)
+    list_of_visited_nodes.clear()
+    return sum_data_in_tree(start_point, lvl) / length
 
 
-list_of_visited_leafs = []
+list_of_visited_nodes = []
 
 
 # create list of all nodes beneath start_point
 def visited_nodes(start_point):
     if start_point is None:
         return None
-    list_of_visited_leafs.append(start_point)
+    list_of_visited_nodes.append(start_point)
     if start_point.left is not None:
         visited_nodes(start_point.left)
     if start_point.right is not None:
@@ -110,26 +109,26 @@ def take_data(elem):
 
 
 # sort list of nodes and choose median
-def median(start, tier):
-    visited_nodes(search(start, tier))
+def median(start_point, lvl):
+    visited_nodes(search(start_point, lvl))
 
-    list_of_visited_leafs.sort(key=take_data)
-    length = len(list_of_visited_leafs)
+    list_of_visited_nodes.sort(key=take_data)
+    length = len(list_of_visited_nodes)
 
     if length % 2 != 0:
-        tmp = list_of_visited_leafs[math.ceil(length / 2) - 1].data
-        list_of_visited_leafs.clear()
+        tmp = list_of_visited_nodes[math.ceil(length / 2) - 1].data
+        list_of_visited_nodes.clear()
         return tmp
     else:
-        value1 = list_of_visited_leafs[int((length / 2) - 1)].data
-        value2 = list_of_visited_leafs[int((length / 2))].data
-        list_of_visited_leafs.clear()
+        value1 = list_of_visited_nodes[int((length / 2) - 1)].data
+        value2 = list_of_visited_nodes[int((length / 2))].data
+        list_of_visited_nodes.clear()
         return (value1 + value2) / 2
 
 
 # ===============================================================================================================================================================================
 # create tree
-nodes = [5, 3, 7, 2, 0, 1, 8]
+unique_nodes = [5, 3, 7, 2, 0, 1, 8]
 root_of_tree = create_tree()
 root_of_tree.print_lvl()
 
@@ -145,7 +144,7 @@ while True:
         continue
     else:
 
-        if start in nodes:
+        if start in unique_nodes:
             break
         else:
             print("Nie ma takiego elementu, spróbuj jeszcze raz: ")
